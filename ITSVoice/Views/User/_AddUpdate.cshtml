@@ -1,0 +1,120 @@
+﻿@model ITSVoice.Models.UserModel
+<div class="modal" id="modal-create">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"><b id="user_head">Create</b> User</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="formCreate" action="/User/_CreateUser" method="post" onsubmit="return false;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.HiddenFor(Model => Model.Id)
+                                @Html.LabelFor(model => model.Fullname):
+                                @Html.EditorFor(model => model.Fullname, new { htmlAttributes = new { @class = "form-control", placeholder = "Full Name" } })
+                                @Html.ValidationMessageFor(model => model.Fullname, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Username):
+                                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
+                                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Password):
+                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Password" } })
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Email):
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Email" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Mobile):
+                                @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", placeholder = "ex: 923113644859" } })
+                                @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="status" name="status"><span>Status</span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ExpiryDateTime):
+                                @Html.EditorFor(model => model.ExpiryDateTime, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ExpiryDateTime, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.UserType):
+                                <select name="UserType" id="UserType" class="form-control" value="@ViewBag.UserType">
+                                    <option value="">-- select User Type --</option>
+                                    @{
+                                        if (Session["userType"].ToString().Equals("admin"))
+                                        {
+                                            <option value="admin">Admin</option>
+                                            <option value="master">Master</option>
+                                        }
+                                    }
+                                    <option value="user">User</option>
+                                </select>
+                                @Html.ValidationMessageFor(model => model.UserType, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.AccountType):
+                                <select name="AccountType" id="AccountType" class="form-control" value="@ViewBag.AccountType">
+                                    <option value="">-- select Account Type --</option>
+                                    <option value="Prepaid">Prepaid</option>
+                                    <option value="Postpaid">Postpaid</option>
+                                </select>
+                                @Html.ValidationMessageFor(model => model.AccountType, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Currency):
+                                <select name="Currency" id="Currency" class="form-control" value="@ViewBag.AccountType">
+                                    <option value="">-- select Currency --</option>
+                                    <option value="PKR">PKR</option>
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="SAR">SAR</option>
+                                    <option value="AED">AED</option>
+                                    <option value="CAD">CAD</option>
+                                    <option value="QAR">QAR</option>
+                                    <option value="TRY">TRY</option>
+                                </select>
+                                @Html.ValidationMessageFor(model => model.Currency, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group balance">
+                                @Html.LabelFor(model => model.BalanceAmount):
+                                @Html.EditorFor(model => model.BalanceAmount, new { htmlAttributes = new { @class = "form-control"} })
+                                @Html.ValidationMessageFor(model => model.BalanceAmount, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CallRateAmount):
+                                @Html.EditorFor(model => model.CallRateAmount, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CallRateAmount, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.Label("IP"):
+                                @Html.EditorFor(model => model.AuthorizedIP, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.AuthorizedIP, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Create" class="btn btn-sm btn-info" id="btnCreate" onclick="formSubmit('/User/_AddUpdate', false)"/>
+                                <input type="submit" value="Update" class="btn btn-sm btn-info hidden" id="btnUpdate" onclick="formSubmit('/User/_UpdateUser', true)"/>
+                                <input type="button" class="btn btn-sm btn-danger" data-dismiss="modal" value="close">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

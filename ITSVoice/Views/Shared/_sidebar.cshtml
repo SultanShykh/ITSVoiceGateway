@@ -1,0 +1,43 @@
+﻿<div id="left-sidebar" class="sidebar">
+    <button type="button" class="btn btn-xs btn-link btn-toggle-fullwidth">
+        <span class="sr-only">Toggle Fullwidth</span>
+        <i class="fa fa-angle-left"></i>
+    </button>
+    <div class="sidebar-scroll">
+        <div class="user-account">
+            <div class="dropdown">
+                <a href="#" class="dropdown-toggle user-name" data-toggle="dropdown">Hello, <strong>@Session["username"]</strong></a>
+                <ul class="dropdown-menu dropdown-menu-right account">
+                    <li class="dropdown-item"><a href="/Account/Logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <nav id="left-sidebar-nav" class="sidebar-nav">
+            
+            <ul id="main-menu" class="metismenu">
+                <li class="@Html.IsActive("Index","Home")"><a href="/Home/Index"><i class="lnr lnr-home"></i> <span>Dashboard</span></a></li>
+                @{
+                    try
+                    {
+                        if (Session["userType"].ToString() != "user")
+                        {
+                            <li class="@Html.IsActive("Index","User")"><a href="/User/Index"><i class="lnr lnr-file-empty"></i> <span>Users</span></a></li>
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+                <li class="@Html.IsActive("","Campaign")" id="campaignTop">
+                    <a href="#subPages" class="has-arrow" id="campaignHead" aria-expanded="false"><i class="lnr lnr-file-empty"></i> <span>Campaign</span></a>
+                    <ul aria-expanded="true" id="campaign">
+                        <li class="@Html.IsActive("CampaignCDR","Campaign")"><a href="/Campaign/CampaignCDR">Campaign CDR</a></li>
+                        <li class="@Html.IsActive("CreateCampaign","Campaign")"><a href="/Campaign/CreateCampaign">Create Campaign</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

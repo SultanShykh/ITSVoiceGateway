@@ -1,0 +1,174 @@
+﻿@model List<ITSVoice.Models.CampaignCDRModel>
+
+<div id="main-content">
+    <div class="container-fluid">
+        <h1 class="sr-only">Dashboard</h1>
+        <div class="dashboard-section">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel-content">
+                        <h3 class="heading"><i class="fa fa-square"></i>Campaign CDR's</h3>
+                        <br />
+                        <form class="form-inline" action="/Campaign/CampaignCDR" method="get">
+                            <label for="pwd">CallType:</label>
+                            <select id="callType" name="callType" class="form-control form-control-sm m-2" value="@ViewBag.callType">
+                                <option value="">-- select Call Type --</option>
+                                <option value="1">Outgoing</option>
+                                <option value="2">Incoming</option>
+                            </select>
+                            <label for="email">Created DateTime:</label>
+
+                            <input type="date" class="form-control form-control-sm m-2" name="start" value="@ViewBag.start"/>To
+                            <input type="date" class="form-control form-control-sm m-2" name="end" value="@ViewBag.end"/>
+
+                            <label for="pwd">Call Response:</label>
+                            <select id="callResponse" name="callResponse" class="form-control form-control-sm m-2" value="@ViewBag.callResponse">
+                                <option value="">-- select Call Response --</option>
+                                <option value="1">Queued</option>
+                                <option value="2">Pending</option>
+                                <option value="3">Answered</option>
+                                <option value="5">Failed</option>
+                                <option value="6">UnAnswered</option>
+                                <option value="7">Rejected</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                        </form>
+                        <br />
+                        <div class="table-responsive">
+                            <table class="table table-striped no-margin table-sm" id="campTable">
+                                <thead>
+                                    <tr class="text-sm">
+                                        <th></th>
+                                        <th>Id</th>
+                                        <th>CampaignId</th>
+                                        <th>CallType</th>
+                                        <th>PartyA</th>
+                                        <th>PartyB</th>
+                                        <th>CreatedDateTime</th>
+                                        <th>ScheduleDateTime</th>
+                                        <th>CallResponse</th>
+                                        <th>CallCost</th>
+                                        <th>CallPickDateTime</th>
+                                        <th>CallDuration</th>
+                                        <th>CallRetries</th>
+                                        <th>CallStartDateTime</th>
+                                        <th>CallRateAmount</th>
+                                        <th>CallbackId</th>
+                                        <th>CallInput</th>
+                                        <th>APIParams</th>
+                                        <th>RemoteIP</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        foreach (var v in Model)
+                                        {
+                                            var callType = "";
+                                            var callResponse = "";
+                                            var msg = "";
+                                            if (v.CallType == 1)
+                                            {
+                                                callType = "Outgoing";
+                                            }
+                                            else if (v.CallType == 2)
+                                            {
+                                                callType = "Incoming";
+                                            }
+
+                                            if (v.CallResponse == 1)
+                                            {
+                                                callResponse = "Queued";
+                                                msg = "info";
+                                            }
+                                            else if (v.CallResponse == 2)
+                                            {
+                                                callResponse = "Pending";
+                                                msg = "warning";
+                                            }
+                                            else if (v.CallResponse == 3)
+                                            {
+                                                callResponse = "Answered";
+                                                msg = "success";
+                                            }
+                                            else if (v.CallResponse == 5)
+                                            {
+                                                callResponse = "Failed";
+                                                msg = "danger";
+                                            }
+                                            else if (v.CallResponse == 6)
+                                            {
+                                                callResponse = "UnAnswered";
+                                                msg = "info";
+                                            }
+                                            else if (v.CallResponse == 7)
+                                            {
+                                                callResponse = "Rejected";
+                                                msg = "danger";
+                                            }
+
+                                            <tr class="text-center">
+                                                <td></td>
+                                                <td>@v.Id</td>
+                                                <td>@v.CampaignId</td>
+                                                <td>@callType</td>
+                                                <td>@v.PartyA</td>
+                                                <td>@v.PartyB</td>
+                                                <td>@v.CreatedDateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                                <td>@v.ScheduleDateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                                <td><span class="badge badge-@msg">@callResponse</span></td>
+                                                <td>@v.CallCost</td>
+                                                <td>@v.CallPickDateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                                <td>@v.CallDuration.ToString("ss")</td>
+                                                <td>@v.CallRetries</td>
+                                                <td>@v.CallStartDateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                                <td>@v.CallRateAmount</td>
+                                                <td>@v.CallbackId</td>
+                                                <td>@v.CallInput</td>
+                                                <td>@v.APIParams</td>
+                                                <td>@v.RemoteIP</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <br />
+                        <div class="container">
+                            <ul class="pagination">
+                                @if (ViewBag.PageNumber > 1)
+                                {
+                                    <li class="page-item"><a class="page-link" href="/Campaign/CampaignCDR/1">First</a></li>
+                                    <li class="page-item"><a class="page-link" href="/Campaign/CampaignCDR/@((int)ViewBag.PageNumber - 1)">Previous</a></li>
+                                }
+
+                                <li class="page-item mt-1"><strong>&nbsp;&nbsp;&nbsp;@ViewBag.PageNumber&nbsp;&nbsp;&nbsp;</strong></li>
+                                @if (ViewBag.PageNumber < ViewBag.totalPages)
+                                {
+                                    <li class="page-item"><a class="page-link" href="/Campaign/CampaignCDR/@((int)ViewBag.PageNumber + 1)">Next</a></li>
+                                    <li class="page-item"><a class="page-link" href="/Campaign/CampaignCDR/@ViewBag.totalPages">@ViewBag.totalPages</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+    {
+    <script>
+        $(document).ready(function () {
+            $('#campTable').DataTable({
+                responsive: true,
+                paging: false,
+                ordering: false,
+                searching: false,
+                info: false,
+            });
+
+            $('#callType').val("@ViewBag.callType");
+            $('#callResponse').val("@ViewBag.callResponse");
+        });
+    </script>
+    }

@@ -1,0 +1,170 @@
+﻿@model List<ITSVoice.Models.UserModel>
+<div id="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel-content">
+                    <h3 class="heading"><span data-toggle="modal" data-target="#modal-create"><i id="create" class="fa fa-plus" style="cursor:pointer" data-toggle="tooltip" title="Add User"></i></span>Users</h3>
+                    <br />
+                    <form class="form-inline" action="/User/Index" method="get">
+                        <label for="pwd">User Name:</label>
+                        <input type="text" id="username" name="username" class="form-control form-control-sm m-2" value="@ViewBag.username">
+                        <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                    </form>
+                    <br />
+                    <div class="table-responsive">
+                        <table class="table table-striped table-sm" id="userTable">
+                            <thead>
+                                <tr class="text-sm">
+                                    <th></th>
+                                    <th hidden>Id</th>
+                                    <th>Fullname</th>
+                                    <th>Username</th>
+                                    <th>API Key</th>
+                                    <th>Status</th>
+                                    <th>Balance Amount</th>
+                                    <th>CallRateAmount</th>
+                                    <th>User Type</th>
+                                    <th>Account Type</th>
+                                    <th>Action</th>
+                                    <th>Currency</th>
+                                    <td>Email</td>
+                                    <td>Mobile</td>
+                                    <th>CreatedDateTime</th>
+                                    <th>ExpiryDateTime</th>
+                                    <th>Authorize IP</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var v in Model)
+                                    {
+                                        var status = v.status == true ? "Active" : "In Active";
+                                        <tr class="text-sm ">
+                                            <td></td>
+                                            <td hidden>@v.Id</td>
+                                            <td>@v.Fullname</td>
+                                            <td>@v.Username</td>
+                                            <td>@v.APIKey</td>
+                                            <td>@status</td>
+                                            <td>@v.BalanceAmount</td>
+                                            <td>@v.CallRateAmount</td>
+                                            <td>@v.UserType</td>
+                                            <td>@v.AccountType</td>
+                                            <td><button class="btn btn-sm btn-info edit" data-toggle="modal" data-target="#modal-create">Edit</button></td>
+                                            <td>@v.Currency</td>
+                                            <td>@v.Email</td>
+                                            <td>@v.Mobile</td>
+                                            <td>@v.CreatedDateTime.ToString("yyyy-MM-dd")</td>
+                                            <td>@v.ExpiryDateTime.ToString("yyyy-MM-dd")</td>
+                                            <td>@v.AuthorizedIP</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <br />
+                    <div class="container">
+                        <ul class="pagination">
+                            @if (ViewBag.PageNumber > 1)
+                            {
+                                <li class="page-item"><a class="page-link" href="/Campaign/CampaignCDR/1">First</a></li>
+                                <li class="page-item"><a class="page-link" href="/Campaign/CampaignCDR/@((int)ViewBag.PageNumber - 1)">Previous</a></li>
+                            }
+                            <li class="page-item mt-1"><strong>&nbsp;&nbsp;&nbsp;@ViewBag.PageNumber&nbsp;&nbsp;&nbsp;</strong></li>
+                            @if (ViewBag.PageNumber < ViewBag.totalPages)
+                            {
+                                <li class="page-item"><a class="page-link" href="/Campaign/CampaignCDR/@((int)ViewBag.PageNumber + 1)">Next</a></li>
+                                <li class="page-item"><a class="page-link" href="/Campaign/CampaignCDR/@ViewBag.totalPages">@ViewBag.totalPages</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@{
+    Html.RenderAction("_AddUpdate", "User");
+}
+@section scripts
+    {
+    <script>
+        var formCreate = $("#formCreate");
+        $(document).ready(function () {
+            $('#userTable').DataTable({
+                responsive: true,
+                paging: false,
+                ordering: false,
+                searching: false,
+                info: false,
+            });
+        });
+        $('#create').click(function () {
+            $('.field-validation-error').text('');
+            formCreate.trigger('reset');
+            $('#user_head').text('Create');
+            $('#btnUpdate').addClass('d-none');
+            $('#btnCreate').removeClass('d-none');
+        });
+        $('.edit').click(function () {
+            $('#balance').removeClass('hidden');
+            $('.field-validation-error').text('');
+            formCreate.trigger('reset');
+            $('#Password').rules('remove');
+            $('#user_head').text('Update');
+            $('#btnCreate').addClass('d-none');
+            $('#btnUpdate').removeClass('d-none');
+
+            var userTable = $('#userTable').DataTable();
+            var data = userTable.row($(this).closest('tr')).data();
+
+            $('#Id').val(data[1]);
+            $('#Fullname').val(data[2]);
+            $('#Username').val(data[3]);
+            $('#APIKey').val(data[4]);
+            $('#APIKey').attr('readonly', true);
+
+            $('#Status').val(data[5]);
+            if (data[5] == 'Active') {
+                $('#status').attr('checked', true);
+            } else {
+                $('#status').attr('checked', false);
+            }
+            $('#BalanceAmount').val(data[6]);
+            $('#CallRateAmount').val(data[7]);
+            $('#UserType').val(data[8]);
+            $('#AccountType').val(data[9]);
+            $('#Currency').val(data[11]);
+            $('#Email').val(data[12]);
+            $('#Mobile').val(data[13]);
+
+            $('#ExpiryDateTime').val(data[15]);
+            $('#AuthorizedIP').val(data[16]);
+        });
+        function formSubmit(action, flag) {
+            if (flag == true) {
+                $('#Password').rules('remove');
+            }
+
+            if ($('#status').val() == "on") {
+                $('#status').val(true);
+            } else {
+                $('#status').val(false);
+            }
+            if (formCreate.valid()) {
+                ajaxScript.makeAjaxRequest('Post', action, formCreate.serialize()).then(function (data) {
+                    if (data.status == true) {
+                        ShowDivSuccess(data.message);
+                    }
+                    else {
+                        ShowDivSuccess(data.message);
+                    }
+                });
+            } else {
+
+            }
+        }
+    </script>
+}

@@ -1,0 +1,476 @@
+@section styles
+    {
+    <style>
+        .card.draggable {
+            margin-bottom: 1rem;
+            cursor: grab;
+        }
+
+        .droppable {
+            background-color: var(--primary);
+            min-height: 120px;
+            margin-bottom: 1rem;
+        }
+    </style>
+}
+
+<div id="main-content">
+    <div class="container-fluid">
+        <div class="row py-3">
+            <div class="col-sm-4 col-md-4 col-xl-4">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h6 class="card-title text-uppercase text-truncate py-2" id="act">Choose Actions</h6>
+                        <div class="items border border-light">
+                            <div class="card draggable shadow" id="cd3" draggable="true" ondragstart="drag(event)">
+                                <div class="card-body p-2">
+                                    <div class="card-title">
+                                        <a href="" class="lead font-weight-light">Action: Play wave File</a>
+                                    </div>
+                                    <form id="form1">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td><label for="filepath">FilePath: </label></td>
+                                                    <td>
+                                                        <select id="filepath" name="filepath" class="form-control form-control-sm">
+                                                            <option>1222222222222223</option>
+                                                            <option>122222222222223</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="initialDelay">Initial Delay: </label></td>
+                                                    <td>
+                                                        <input type="number" id="initialDelay" name="initialDelay" class="form-control form-control-sm" placeholder="In Seconds" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                            <div class="card draggable shadow" id="cd4" draggable="true" ondragstart="drag(event, ui)">
+                                <div class="card-body p-2">
+                                    <div class="card-title">
+                                        <a href="" class="lead font-weight-light">Action: Take Input</a>
+                                    </div>
+                                    <form id="form2">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td><label for="inputTimeout">Input Timeout: </label></td>
+                                                    <td>
+                                                        <input type="number" id="inputTimeout" name="inputTimeout" class="form-control form-control-sm" placeholder="In Seconds" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="inputType">Input Type: </label></td>
+                                                    <td>
+                                                        <select id="inputType" name="inputType" class="form-control form-control-sm">
+                                                            <option>Digit</option>
+                                                            <option>Voice Recording</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="inputLength">Input Length/Digit Count: </label></td>
+                                                    <td>
+                                                        <input type="number" id="inputLength" name="inputLength" class="form-control form-control-sm" placeholder="In Seconds" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                            <div class="card draggable shadow" id="cd5" draggable="true" ondragstart="drag(event)">
+                                <div class="card-body p-2">
+                                    <div class="card-title">
+                                        <a href="" class="lead font-weight-light">Action: Verify Input</a>
+                                    </div>
+                                    <form id="form3">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td><label for="verifyType">Verify Type: </label></td>
+                                                    <td>
+                                                        <select id="verifyType" name="verifyType" class="form-control form-control-sm">
+                                                            <option>API</option>
+                                                            <option>SP</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="verifyTimeout">Verify Timeout: </label></td>
+                                                    <td>
+                                                        <input type="number" id="verifyTimeout" name="verifyTimeout" class="form-control form-control-sm" placeholder="In Seconds" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="responseType">Response Type: </label></td>
+                                                    <td>
+                                                        <select id="responseType" name="responseType" class="form-control form-control-sm">
+                                                            <option>bool</option>
+                                                            <option>string</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                            <div class="card draggable shadow" id="cd6" draggable="true" ondragstart="drag(event)">
+                                <div class="card-body p-2">
+                                    <div class="card-title">
+                                        <a href="" class="lead font-weight-light">Action: Bool Input Response</a>
+                                    </div>
+                                    <form id="form4">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td><label for="trueFilepath">True File Path: </label></td>
+                                                    <td>
+                                                        <select id="trueFilepath" name="trueFilepath" class="form-control form-control-sm">
+                                                            <option>API</option>
+                                                            <option>SP</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="falseFilepath">False File Path: </label></td>
+                                                    <td>
+                                                        <select id="falseFilepath" name="falseFilepath" class="form-control form-control-sm">
+                                                            <option>API</option>
+                                                            <option>SP</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="intialDelay">Initial Delay: </label></td>
+                                                    <td>
+                                                        <input type="number" id="intialDelay" name="intialDelay" class="form-control form-control-sm" placeholder="In Seconds" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </form> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-4 col-xl-4">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h6 class="card-title text-uppercase text-truncate py-2">Actions</h6>
+                        <div class="items border border-light">
+                            <div class="card draggable shadow" id="cd7" draggable="true" ondragstart="drag(event)">
+                                <div class="card-body p-2">
+                                    <div class="card-title">
+                                        <a href="" class="lead font-weight-light">Action: String Input Response</a>
+                                    </div>
+                                    <form id="form5">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td><label for="text">Text: </label></td>
+                                                    <td>
+                                                        <input type="text" id="text" class="form-control form-control-sm" value="string" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="voiceName">Voice Name: </label></td>
+                                                    <td>
+                                                        <input type="text" id="voiceName" name="voiceName" class="form-control form-control-sm" value="string" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="intialDelay">Initial Delay: </label></td>
+                                                    <td>
+                                                        <input type="number" id="intialDelay" name="intialDelay" class="form-control form-control-sm" placeholder="In Seconds" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                            <div class="card draggable shadow" id="cd8" draggable="true" ondragstart="drag(event)">
+                                <div class="card-body p-2">
+                                    <div class="card-title">
+                                        <a href="" class="lead font-weight-light">Action: Callback</a>
+                                    </div>
+                                    <form id="form6">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td><label for="disconnectTime">Disconnect Time: </label></td>
+                                                    <td>
+                                                        <input type="number" id="disconnectTime" name="disconnectTime" class="form-control form-control-sm" placeholder="In Seconds" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="callbackDelay">Callback Delay: </label></td>
+                                                    <td>
+                                                        <input type="number" id="callbackDelay" name="callbackDelay" class="form-control form-control-sm" placeholder="In Seconds" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                            <div class="card draggable shadow" id="cd9" draggable="true" ondragstart="drag(event)">
+                                <div class="card-body p-2">
+                                    <div class="card-title">
+                                        <a href="" class="lead font-weight-light">Action: Play TTS</a>
+                                    </div>
+                                    <form id="form6">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td><label for="text">Text: </label></td>
+                                                    <td>
+                                                        <input type="text" id="text" name="text" class="form-control form-control-sm" value="string" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="voiceName">Voice Name: </label></td>
+                                                    <td>
+                                                        <input type="text" id="voiceName" name="voiceName" class="form-control form-control-sm" value="string" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="initialDelay">Initial Delay: </label></td>
+                                                    <td>
+                                                        <input type="number" id="initialDelay" name="initialDelay" class="form-control form-control-sm" placeholder="In Seconds" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                            <div class="card draggable shadow" id="cd9" draggable="true" ondragstart="drag(event)">
+                                <div class="card-body p-2">
+                                    <div class="card-title">
+                                        <a href="" class="lead font-weight-light">Action: Play Beep</a>
+                                    </div>
+                                    <form id="form7">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td><label for="filepath">File Path:  (optional)</label></td>
+                                                    <td>
+                                                        <select id="filepath" name="filepath" class="form-control form-control-sm">
+                                                            <option>API</option>
+                                                            <option>SP</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                            <div class="card draggable shadow" id="cd10" draggable="true" ondragstart="drag(event)">
+                                <div class="card-body p-2">
+                                    <div class="card-title">
+                                        <a href="" class="lead font-weight-light">Action: Play Parametrized Wave Files</a>
+                                    </div>
+                                    <form id="form7">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td><label for="filepath">File Path: (optional)</label></td>
+                                                    <td>
+                                                        <select id="filepath" name="filepath" class="form-control form-control-sm">
+                                                            <option>path</option>
+                                                            <option>path</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="defaultFilepath">Default File Path: (optional)</label></td>
+                                                    <td>
+                                                        <select id="defaultFilepath" name="defaultFilepath" class="form-control form-control-sm">
+                                                            <option>path</option>
+                                                            <option>path</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="initialDelay">Initial Delay: </label></td>
+                                                    <td>
+                                                        <input type="number" id="initialDelay" name="initialDelay" class="form-control form-control-sm" placeholder="In Seconds" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="parameterIdentifier">Parameter Identifier: </label></td>
+                                                    <td>
+                                                        <input type="text" id="parameterIdentifier" name="parameterIdentifier" class="form-control form-control-sm" value="string" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="parameterType">Parameter Type: </label></td>
+                                                    <td>
+                                                        <select id="parameterType" name="parameterType" class="form-control form-control-sm">
+                                                            <option>Char</option>
+                                                            <option>Word</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-4 col-xl-4">
+                <form id="form" method="post" action="">
+                    <div class="form-group">
+                        <label class="radio radio-inline">
+                            <input type="radio" id="call" name="call" value="inboundCall"> Inbound Call
+                        </label>
+                        <label class="radio radio-inline">
+                            <input type="radio" id="call" name="call" value="outboundCall"> Outbound Call
+                        </label>
+                    </div>
+
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h6 class="card-title text-uppercase text-truncate py-2">Campaign Actions</h6>
+                            <div class="items border border-light">
+                                <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="submit" class="btn btn-sm btn-primary" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+    {
+    <script>
+        const drag = (event, ui) => {
+            debugger
+            event.dataTransfer.setData("text/plain", event.target.id);
+        }
+
+        const allowDrop = (ev) => {
+            ev.preventDefault();
+            if (hasClass(ev.target, "dropzone")) {
+                addClass(ev.target, "droppable");
+            }
+        }
+
+        const clearDrop = (ev) => {
+            removeClass(ev.target, "droppable");
+        }
+
+        const drop = (event) => {
+            event.preventDefault();
+            const data = event.dataTransfer.getData("text/plain");
+            const element = document.querySelector(`#${data}`);
+            try {
+                // remove the spacer content from dropzone
+                event.target.removeChild(event.target.firstChild);
+                // add the draggable content
+                event.target.appendChild(element);
+                // remove the dropzone parent
+                unwrap(event.target);
+            } catch (error) {
+                console.warn("can't move the item to the same place")
+            }
+            updateDropzones();
+        }
+
+        const updateDropzones = () => {
+            /* after dropping, refresh the drop target areas
+              so there is a dropzone after each item
+              using jQuery here for simplicity */
+
+            var dz = $('<div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>');
+
+            // delete old dropzones
+            $('.dropzone').remove();
+
+            // insert new dropdzone after each item
+            dz.insertAfter('.card.draggable');
+
+            // insert new dropzone in any empty swimlanes
+            $(".items:not(:has(.card.draggable))").append(dz);
+        };
+
+        // helpers
+        function hasClass(target, className) {
+            return new RegExp('(\\s|^)' + className + '(\\s|$)').test(target.className);
+        }
+
+        function addClass(ele, cls) {
+            if (!hasClass(ele, cls)) ele.className += " " + cls;
+        }
+
+        function removeClass(ele, cls) {
+            if (hasClass(ele, cls)) {
+                var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+                ele.className = ele.className.replace(reg, ' ');
+            }
+        }
+
+        function unwrap(node) {
+            node.replaceWith(...node.childNodes);
+        }
+
+        function getFormData(form) {
+            var unindexed_array = $(form).serializeArray();
+            var ss = "";
+            $.map(unindexed_array, function (n, i) {
+                ss += n['name'] + ":" + n['value']+",";
+            });
+            return ss.substring(0, ss.length - 1);
+        }
+
+        var form = $('#form');
+        form.submit(function (e) {
+            e.preventDefault();
+            var ss = "";
+            var obj = "";
+            var id1 = $('#form #call').first().attr('id');
+            var id2 = $('#form #inboundCall').attr('id');
+            var id3 = $('#form #outboundCall').attr('id');
+
+            if (id1 == id2 || id1 == id3) {
+                console.log('done');
+            }
+
+            if ($('#form #inbound').length > 0 || $('#form #outbound').length > 0) {
+                console.log(true);
+            } 
+            
+            $.each(form.find('form'), function (key, val) {
+                obj += key + ":{" + getFormData(val) + "},";
+                ss += obj;
+                obj = "";
+            });
+            ss = "{" + ss.substring(0, ss.length - 1) + "}";
+            console.log(ss);
+        });
+    </script>
+}

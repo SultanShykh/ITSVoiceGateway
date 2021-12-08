@@ -1,0 +1,18 @@
+#left-sidebar {
+    margin-top: 0;
+}
+#main-content{
+	padding-top: 0;
+}
+
+#act {
+	height: 610px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+#ActionMain {
+	height: 550px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
