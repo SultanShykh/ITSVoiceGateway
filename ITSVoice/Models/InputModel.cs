@@ -22,9 +22,7 @@ namespace ITSVoice.Models
         public override T GetInstance<T>()
         {
             return (T)Convert.ChangeType(this, typeof(Input));
-
         }
-
         public override void ValidateRequest(Action func)
         {
             func();

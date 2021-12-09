@@ -21,164 +21,165 @@
     <div class="container-fluid">
         <div class="row py-3">
             <div class="col-sm-6 col-md-6 col-xl-6">
-                <div class="card bg-light">
-                    <div class="card-body" id="act">
-                        <h6 class="card-title text-uppercase text-truncate py-2">Choose Actions</h6>
-                        <div class="items border border-light">
-                            @{
-                                for (int i = 0; i < Model.Count; i++)
-                                {
-                                    <div class="card draggable shadow" id="action-@i" draggable="true" ondragstart="drag(event)">
-                                        <div class="card-body p-2">
-                                            <div class="card-title">
-                                                <a href="" class="lead font-weight-light">Action: @Model[i].Action.ToString()</a>
-                                                <span class="lnr lnr-circle-minus text-danger" id="remove-@i" onclick="removeAction(this)"></span>
+                    <div class="card bg-light">
+                        <div class="card-body" id="act">
+                            <h6 class="card-title text-uppercase text-truncate py-2">Choose Actions</h6>
+                            <div class="items border border-light">
+                                @{
+                                    for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        <div class="card draggable shadow" id="action-@i" draggable="true" ondragstart="drag(event)">
+                                            <div class="card-body p-2">
+                                                <div class="card-title">
+                                                    <a href="" class="lead font-weight-light">Action: @Model[i].Action.ToString()</a>
+                                                    <span class="lnr lnr-circle-minus text-danger" id="remove-@i" onclick="removeAction(this)"></span>
+                                                </div>
+
+                                                @Html.Hidden($"[{i}].Action", Model[i].Action.ToString(), new { @class = "form-control form-control-sm" })
+
+                                                @if (Model[i].Action == "Callback")
+                                                {
+                                                    Callback obj = Model[i].GetInstance<Callback>();
+
+                                                    @Html.Label($"CallActions[{i}].CallbackDelay:")
+                                                    @Html.TextBox($"CallActions[{i}].CallbackDelay", obj.CallbackDelay, new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"[{i}].CallbackDelay")
+                                                    <br />
+                                                    @Html.Label($"CallActions[{i}].DisconnectDelay:")
+                                                    @Html.TextBox($"CallActions[{i}].DisconnectDelay", obj.CallbackDelay, new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].CallbackDelay")
+                                                }
+                                                else if (Model[i].Action == "Beep")
+                                                {
+                                                    Beep obj = Model[i].GetInstance<Beep>();
+
+                                                    @Html.Label($"CallActions[{i}].FilePath:")
+                                                    @Html.DropDownList($"CallActions[{i}].FilePath", new SelectList(obj.OptionalFilePathItems, "Value", "Text"), new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].FilePath")
+                                                }
+                                                else if (Model[i].Action == "WaveFile")
+                                                {
+                                                    WaveFile obj = Model[i].GetInstance<WaveFile>();
+
+                                                    @Html.Label($"CallActions[{i}].InitialDelay:")
+                                                    @Html.TextBox($"CallActions[{i}].InitialDelay", obj.InitialDelay, new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].InitialDelay")
+                                                    <br />
+                                                    @Html.Label($"CallActions[{i}].FilePath:")
+                                                    @Html.DropDownList($"CallActions[{i}].FilePath", new SelectList(obj.FilePathItems, "Value", "Text"), new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].FilePath")
+
+                                                }
+                                                else if (Model[i].Action == "InputBoolResponse")
+                                                {
+                                                    InputBoolResponse obj = Model[i].GetInstance<InputBoolResponse>();
+
+                                                    @Html.Label($"CallActions[{i}].InitialDelay:")
+                                                    @Html.TextBox($"CallActions[{i}].InitialDelay", obj.InitialDelay, new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].InitialDelay")
+                                                    <br />
+                                                    @Html.Label($"CallActions[{i}].TrueFilePath:")
+                                                    @Html.DropDownList($"CallActions[{i}].TrueFilePath", new SelectList(obj.TrueFilePathItems, "Value", "Text"), new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].TrueFilePath")
+                                                    <br />
+                                                    @Html.Label($"CallActions[{i}].FalseFilePath:")
+                                                    @Html.DropDownList($"CallActions[{i}].FalseFilePath", new SelectList(obj.FalseFilePathItems, "Value", "Text"), new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].FalseFilePath")
+                                                }
+                                                else if (Model[i].Action == "Input")
+                                                {
+                                                    Input obj = Model[i].GetInstance<Input>();
+
+                                                    @Html.Label($"CallActions[{i}].Timeout:")
+                                                    @Html.TextBox($"CallActions[{i}].Timeout", obj.Timeout, new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].Timeout")
+                                                    <br />
+                                                    @Html.Label($"CallActions[{i}].Type:")
+                                                    @Html.DropDownList($"CallActions[{i}].Type", new SelectList(obj.TypeItems, "Value", "Text"), new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].Type")
+                                                    <br />
+                                                    @Html.Label($"CallActions[{i}].Length:")
+                                                    @Html.TextBox($"CallActions[{i}].Length", obj.Length, new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].Length")
+                                                }
+                                                else if (Model[i].Action == "InputStringResponseTTS")
+                                                {
+                                                    InputStringResponseTTS obj = Model[i].GetInstance<InputStringResponseTTS>();
+
+                                                    @Html.Label($"CallActions[{i}].InitialDelay:")
+                                                    @Html.TextBox($"CallActions[{i}].InitialDelay", obj.InitialDelay, new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].InitialDelay")
+                                                    <br />
+                                                    @Html.Label($"CallActions[{i}].Text:")
+                                                    @Html.TextBox($"CallActions[{i}].Text", obj.Text, new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].Text")
+                                                    <br />
+                                                    @Html.Label($"CallActions[{i}].VoiceName:")
+                                                    @Html.TextBox($"CallActions[{i}].VoiceName", obj.VoiceName, new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].VoiceName")
+                                                }
+                                                else if (Model[i].Action == "InputStringResponseWaveFile")
+                                                {
+                                                    InputStringResponseWaveFile obj = Model[i].GetInstance<InputStringResponseWaveFile>();
+
+                                                    @Html.Label($"CallActions[{i}].InitialDelay:")
+                                                    @Html.TextBox($"CallActions[{i}].InitialDelay", obj.InitialDelay, new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].InitialDelay")
+                                                    <br />
+                                                    @Html.Label($"CallActions[{i}].FilePath:")
+                                                    @Html.DropDownList($"CallActions[{i}].FilePath", new SelectList(obj.FilePathItems, "Value", "Text"), new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].FilePath")
+                                                }
+                                                else if (Model[i].Action == "InputVerify")
+                                                {
+                                                    InputVerify obj = Model[i].GetInstance<InputVerify>();
+
+                                                    @Html.Label($"CallActions[{i}].VerificationType:")
+                                                    @Html.DropDownList($"CallActions[{i}].VerificationType", new SelectList(obj.VerificationTypeItems, "Value", "Text"), new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].VerificationType")
+                                                    <br />
+                                                    @Html.Label($"CallActions[{i}].VerificationTimeout:")
+                                                    @Html.TextBox($"CallActions[{i}].VerificationTimeout", obj.VerificationTimeout, new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].VerificationTimeout")
+                                                    <br />
+                                                    @Html.Label($"CallActions[{i}].ResponseType:")
+                                                    @Html.DropDownList($"CallActions[{i}].ResponseType", new SelectList(obj.ResponseTypeItems, "Value", "Text"), new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].ResponseType")
+                                                }
+                                                else if (Model[i].Action == "ParameterizedWaveFile")
+                                                {
+                                                    ParameterizedWaveFile obj = Model[i].GetInstance<ParameterizedWaveFile>();
+
+                                                    @Html.Label($"CallActions[{i}].OptionalFolder:")
+                                                    @Html.DropDownList($"CallActions[{i}].OptionalFolder", new SelectList(obj.OptionalFolderItems, "Value", "Text"), new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].OptionalFolder")
+                                                }
+                                                else if (Model[i].Action == "TTS")
+                                                {
+                                                    TTS obj = Model[i].GetInstance<TTS>();
+
+                                                    @Html.Label($"CallActions[{i}].InitialDelay:")
+                                                    @Html.TextBox($"CallActions[{i}].InitialDelay", obj.InitialDelay, new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].InitialDelay")
+                                                    <br />
+                                                    @Html.Label($"CallActions[{i}].Text:")
+                                                    @Html.TextBox($"CallActions[{i}].Text", obj.Text, new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].Text")
+                                                    <br />
+                                                    @Html.Label($"CallActions[{i}].VoiceName:")
+                                                    @Html.TextBox($"CallActions[{i}].VoiceName", obj.VoiceName, new { @class = "form-control form-control-sm" });
+                                                    @Html.ValidationMessage($"CallActions[{i}].VoiceName")
+                                                }
+
                                             </div>
-
-                                            @Html.Hidden($"[{i}].Action", Model[i].Action.ToString())
-
-                                            @if (Model[i].Action == "Callback")
-                                            {
-                                                Callback obj = Model[i].GetInstance<Callback>();
-
-                                                @Html.Label($"[{i}].CallbackDelay:")
-                                                @Html.TextBox($"[{i}].CallbackDelay", obj.CallbackDelay, new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].CallbackDelay")
-                                                <br />
-                                                @Html.Label($"[{i}].DisconnectDelay:")
-                                                @Html.TextBox($"[{i}].DisconnectDelay", obj.CallbackDelay, new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].CallbackDelay")
-                                            }
-                                            else if (Model[i].Action == "Beep")
-                                            {
-                                                Beep obj = Model[i].GetInstance<Beep>();
-
-                                                @Html.Label($"[{i}].FilePath:")
-                                                @Html.DropDownList($"[{i}].FilePath", new SelectList(obj.OptionalFilePathItems, "Value", "Text"), new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].FilePath")
-                                            }
-                                            else if (Model[i].Action == "WaveFile")
-                                            {
-                                                WaveFile obj = Model[i].GetInstance<WaveFile>();
-
-                                                @Html.Label($"[{i}].InitialDelay:")
-                                                @Html.TextBox($"[{i}].InitialDelay", obj.InitialDelay, new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].InitialDelay")
-                                                <br />
-                                                @Html.Label($"[{i}].FilePath:")
-                                                @Html.DropDownList($"[{i}].FilePath", new SelectList(obj.FilePathItems, "Value", "Text"), new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].FilePath")
-
-                                            }
-                                            else if (Model[i].Action == "InputBoolResponse")
-                                            {
-                                                InputBoolResponse obj = Model[i].GetInstance<InputBoolResponse>();
-
-                                                @Html.Label($"[{i}].InitialDelay:")
-                                                @Html.TextBox($"[{i}].InitialDelay", obj.InitialDelay, new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].InitialDelay")
-                                                <br />
-                                                @Html.Label($"[{i}].TrueFilePath:")
-                                                @Html.DropDownList($"[{i}].TrueFilePath", new SelectList(obj.TrueFilePathItems, "Value", "Text"), new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].TrueFilePath")
-                                                <br />
-                                                @Html.Label($"[{i}].FalseFilePath:")
-                                                @Html.DropDownList($"[{i}].FalseFilePath", new SelectList(obj.FalseFilePathItems, "Value", "Text"), new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].FalseFilePath")
-                                            }
-                                            else if (Model[i].Action == "Input")
-                                            {
-                                                Input obj = Model[i].GetInstance<Input>();
-
-                                                @Html.Label($"[{i}].Timeout:")
-                                                @Html.TextBox($"[{i}].Timeout", obj.Timeout, new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].Timeout")
-                                                <br />
-                                                @Html.Label($"[{i}].Type:")
-                                                @Html.DropDownList($"[{i}].Type", new SelectList(obj.TypeItems, "Value", "Text"), new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].Type")
-                                                <br />
-                                                @Html.Label($"[{i}].Length:")
-                                                @Html.TextBox($"[{i}].Length", obj.Length, new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].Length")
-                                            }
-                                            else if (Model[i].Action == "InputStringResponseTTS")
-                                            {
-                                                InputStringResponseTTS obj = Model[i].GetInstance<InputStringResponseTTS>();
-
-                                                @Html.Label($"[{i}].InitialDelay:")
-                                                @Html.TextBox($"[{i}].InitialDelay", obj.InitialDelay, new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].InitialDelay")
-                                                <br />
-                                                @Html.Label($"[{i}].Text:")
-                                                @Html.TextBox($"[{i}].Text", obj.Text, new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].Text")
-                                                <br />
-                                                @Html.Label($"[{i}].VoiceName:")
-                                                @Html.TextBox($"[{i}].VoiceName", obj.VoiceName, new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].VoiceName")
-                                            }
-                                            else if (Model[i].Action == "InputStringResponseWaveFile")
-                                            {
-                                                InputStringResponseWaveFile obj = Model[i].GetInstance<InputStringResponseWaveFile>();
-
-                                                @Html.Label($"[{i}].InitialDelay:")
-                                                @Html.TextBox($"[{i}].InitialDelay", obj.InitialDelay, new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].InitialDelay")
-                                                <br />
-                                                @Html.Label($"[{i}].FilePath:")
-                                                @Html.DropDownList($"[{i}].FilePath", new SelectList(obj.FilePathItems, "Value", "Text"), new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].FilePath")
-                                            }
-                                            else if (Model[i].Action == "InputVerify")
-                                            {
-                                                InputVerify obj = Model[i].GetInstance<InputVerify>();
-
-                                                @Html.Label($"[{i}].VerificationType:")
-                                                @Html.DropDownList($"[{i}].VerificationType", new SelectList(obj.VerificationTypeItems, "Value", "Text"), new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].VerificationType")
-                                                <br />
-                                                @Html.Label($"[{i}].VerificationTimeout:")
-                                                @Html.TextBox($"[{i}].VerificationTimeout", obj.VerificationTimeout, new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].VerificationTimeout")
-                                                <br />
-                                                @Html.Label($"[{i}].ResponseType:")
-                                                @Html.DropDownList($"[{i}].ResponseType", new SelectList(obj.ResponseTypeItems, "Value", "Text"), new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].ResponseType")
-                                            }
-                                            else if (Model[i].Action == "ParameterizedWaveFile")
-                                            {
-                                                ParameterizedWaveFile obj = Model[i].GetInstance<ParameterizedWaveFile>();
-
-                                                @Html.Label($"[{i}].OptionalFolder:")
-                                                @Html.DropDownList($"[{i}].OptionalFolder", new SelectList(obj.OptionalFolderItems, "Value", "Text"), new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].OptionalFolder")
-                                            }
-                                            else if (Model[i].Action == "TTS")
-                                            {
-                                                TTS obj = Model[i].GetInstance<TTS>();
-
-                                                @Html.Label($"[{i}].InitialDelay:")
-                                                @Html.TextBox($"[{i}].InitialDelay", obj.InitialDelay, new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].InitialDelay")
-                                                <br />
-                                                @Html.Label($"[{i}].Text:")
-                                                @Html.TextBox($"[{i}].Text", obj.Text, new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].Text")
-                                                <br />
-                                                @Html.Label($"[{i}].VoiceName:")
-                                                @Html.TextBox($"[{i}].VoiceName", obj.VoiceName, new { @class = "form-control form-control-sm" });
-                                                @Html.ValidationMessage($"[{i}].VoiceName")
-                                            }
-
                                         </div>
-                                    </div>
-                                    <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                                        <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                                    }
                                 }
-                            }
+
+                            </div>
                         </div>
                     </div>
-                </div>
             </div>
 
             <!--For Main Actions-->
@@ -187,13 +188,12 @@
                     @Html.ValidationSummary(false)
                     <div class="form-group">
                         <label class="radio radio-inline">
-                            <input type="radio" id="call" name="call" value="inboundCall"> Inbound Call
+                            <input type="radio" id="Type" name="Type" value="inboundCall"> Inbound Call
                         </label>
                         <label class="radio radio-inline">
-                            <input type="radio" id="call" name="call" value="outboundCall"> Outbound Call
+                            <input type="radio" id="Type" name="Type" value="outboundCall"> Outbound Call
                         </label>
                     </div>
-
                     <div class="card bg-light">
                         <div class="card-body" id="ActionMain">
                             <h6 class="card-title text-uppercase text-truncate py-2">Campaign Actions</h6>
@@ -202,6 +202,56 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="Name">Name:</label>
+                        <input type="text" name="Name" class="form-control form-control-sm" id="Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="StartDate">StartDate:</label>
+                        <input type="date" class="form-control form-control-sm" id="StartDate" name="StartDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="EndDate">EndDate:</label>
+                        <input type="date" class="form-control form-control-sm" id="EndDate" name="EndDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="DailyStartTime">DailyStartTime:</label>
+                        <input type="time" class="form-control form-control-sm" id="DailyStartTime" name="DailyStartTime">
+                    </div>
+                    <div class="form-group">
+                        <label for="DailyEndTime">DailyEndTime:</label>
+                        <input type="time" class="form-control form-control-sm" id="DailyEndTime" name="DailyEndTime">
+                    </div>
+                    <div class="form-group">
+                        <label for="IsIndefinite">IsIndefinite:</label>
+                        <select name="IsIndefinite" id="IsIndefinite" class="form-control form-control-sm">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Is24Hours">Is24Hours:</label>
+                        <select name="Is24Hours" id="Is24Hours" class="form-control form-control-sm">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Status">Status:</label>
+                        <select name="Status" id="Status" class="form-control form-control-sm">
+                            <option value="1">Active</option>
+                            <option value="0">InActive</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Cost">Cost:</label>
+                        <input type="number" class="form-control" name="Cost" id="Cost">
+                    </div>
+                    <div class="form-group">
+                        <label for="RemoteIP">RemoteIP:</label>
+                        <input type="text" class="form-control" id="RemoteIP" name="RemoteIP">
+                    </div>
+
                     <input type="submit" class="btn btn-sm btn-primary mt-2" />
                 </form>
             </div>
@@ -211,17 +261,20 @@
 @section scripts
     {
     <script>
+        var count = 1;
         $(document).ready(function () {
             $('#act span').hide();
         });
-        var count = 1;
+
         const drag = (event) => {
-            event.dataTransfer.setData("text/plain", event.target.id);
+                event.dataTransfer.setData("text/plain", event.target.id);
         }
         const allowDrop = (ev) => {
-            ev.preventDefault();
-            if (hasClass(ev.target, "dropzone")) {
-                addClass(ev.target, "droppable");
+            if (ev.target.parentElement.parentElement.id == "ActionMain") {
+                ev.preventDefault();
+                if (hasClass(ev.target, "dropzone")) {
+                    addClass(ev.target, "droppable");
+                }
             }
         }
         const clearDrop = (ev) => {
@@ -230,25 +283,40 @@
         const drop = (event) => {
             event.preventDefault();
             const data = event.dataTransfer.getData("text/plain");
-            const nodeCopy = document.getElementById(data).cloneNode(true);
-            nodeCopy.id = "copy" + count;
-            ++count;
-            try {
-                // remove the spacer content from dropzone
-                event.target.removeChild(event.target.firstChild);
-                // add the draggable content
+            const element = document.querySelector(`#${data}`);
 
-                event.target.appendChild(nodeCopy);
-                $('#' + nodeCopy.id + ' span').show()
-                $("#" + nodeCopy.id).children().children().children("span").attr("id", "cut" + count);
-                // remove the dropzone parent
-                unwrap(event.target);
-                //showing the remove span 
-
-            } catch (error) {
-                console.warn("can't move the item to the same place")
+            if (data.includes("action")) {
+                const nodeCopy = document.getElementById(data).cloneNode(true);
+                nodeCopy.id = "copy" + count;
+                ++count;
+                try {
+                    // remove the spacer content from dropzone
+                    event.target.removeChild(event.target.firstChild);
+                    // add the draggable content
+                    event.target.appendChild(nodeCopy);
+                    $('#' + nodeCopy.id + ' span').show()
+                    $("#" + nodeCopy.id).children().children().children("span").attr("id", "cut" + count);
+                    // remove the dropzone parent
+                    unwrap(event.target);
+                    //showing the remove span
+                } catch (error) {
+                    console.warn("can't move the item to the same place")
+                }
+                updateDropzones();
+                refreshFormNames();
+            } else if (data.includes("copy")) {
+                if (event.target.parentElement.parentElement.id == "ActionMain") {
+                    try {
+                        event.target.removeChild(event.target.firstChild);
+                        event.target.appendChild(element);
+                        unwrap(event.target);
+                    } catch (error) {
+                        console.warn("can't move the item to the same place")
+                    }
+                    updateDropzones();
+                    refreshFormNames();
+                }
             }
-            updateDropzones();
         }
         const updateDropzones = () => {
             /* after dropping, refresh the drop target areas
@@ -281,41 +349,6 @@
         function unwrap(node) {
             node.replaceWith(...node.childNodes);
         }
-
-        //function getFormData(form) {
-        //    var unindexed_array = $(form).serializeArray();
-        //    var ss = "";
-        //    $.map(unindexed_array, function (n, i) {
-        //        ss += n['name'] + ":" + n['value'] + ",";
-        //    });
-        //    return ss.substring(0, ss.length - 1);
-        //}
-
-        //var form = $('#form');
-        //form.submit(function (e) {
-        //    e.preventDefault();
-        //    var ss = "";
-        //    var obj = "";
-        //    var id1 = $('#form #call').first().attr('id');
-        //    var id2 = $('#form #inboundCall').attr('id');
-        //    var id3 = $('#form #outboundCall').attr('id');
-
-        //    if (id1 == id2 || id1 == id3) {
-        //        console.log('done');
-        //    }
-
-        //    if ($('#form #inbound').length > 0 || $('#form #outbound').length > 0) {
-        //        console.log(true);
-        //    }
-
-        //    $.each(form.find('form'), function (key, val) {
-        //        obj += key + ":{" + getFormData(val) + "},";
-        //        ss += obj;
-        //        obj = "";
-        //    });
-        //    ss = "{" + ss.substring(0, ss.length - 1) + "}";
-        //    console.log(ss);
-        //});
         function removeAction(nodeId) {
             if ($("#mainActions .draggable").length > 1) {
                 $('#' + nodeId.id).parent().parent().parent().next().remove()
@@ -327,11 +360,35 @@
 
         var form = $('#form');
         form.submit(function (e) {
-            if (!form.valid()) {
+            e.preventDefault();
+            if (form.valid()) {
                 e.preventDefault();
-                alert("Values Required");
+                debugger
+                ajaxScript.makeAjaxRequest('Post', "/Campaign/CreateCampaign", form.serialize()).then(function (data) {
+                    if (data.status == true) {
+                        ShowDivSuccess(data.message);
+                    }
+                    else {
+                        ShowDivError(data.message);
+                    }
+                });
+            } else {
+                ShowDivError("Input data is not valid");
             }
         });
 
+        function refreshFormNames() {
+            var name = "";
+            var ss = "";
+
+            $.each($('#mainActions .card'), function (key, val) {
+                $.each($(val).find('.form-control'), function (key2, val2) {
+                    name = $(val2).attr('name');
+                    ss = name.substring(name.indexOf("]") + 1, name.length);
+                    $(val2).attr('name', "CallActions[" + key + "]" + ss)
+                    $(val2).next().attr('data-valmsg-for', "[" + key + "]" + ss)
+                });
+            });
+        }
     </script>
 }

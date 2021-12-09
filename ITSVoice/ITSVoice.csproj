@@ -153,6 +153,7 @@
     <Compile Include="Models\BeepModel.cs" />
     <Compile Include="Models\CallbackModel.cs" />
     <Compile Include="Models\CampaignCDRModel.cs" />
+    <Compile Include="Models\CampaignModel.cs" />
     <Compile Include="Models\InputBoolResponseModel.cs" />
     <Compile Include="Models\InputModel.cs" />
     <Compile Include="Models\InputStringResponseTTSModel.cs" />

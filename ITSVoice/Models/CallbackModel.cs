@@ -9,10 +9,10 @@ namespace ITSVoice.Models
     {
         [Required]
         [JsonProperty(Order = 1)]
-        public int DisconnectDelay { get; set; }
+        public int? DisconnectDelay { get; set; }
         [Required]
         [JsonProperty(Order = 2)]
-        public int CallbackDelay { get; set; }
+        public int? CallbackDelay { get; set; }
 
         public override T GetInstance<T>()
         {
