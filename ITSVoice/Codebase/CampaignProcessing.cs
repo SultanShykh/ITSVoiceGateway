@@ -25,5 +25,9 @@ namespace ITSVoice.Codebase
             Records.NextResult();
             totalPages = Records.FirstOrDefault().totalPages;
         }
+        public static void CreateCampaign(CampaignModel campaign) 
+        {
+            AppDB.WEB_CreateCampaign(campaign.UserId, campaign.Name, campaign.Type, campaign.StartDate, campaign.EndDate, campaign.DailyStartTime, campaign.DailyEndTime, campaign.IsIndefinite, campaign.Is24Hours, campaign.Status, campaign.CreatedDateTime, campaign.CallFlow, campaign.Cost, campaign.RemoteIP);
+        }
     }
 }

@@ -22,6 +22,8 @@ namespace ITSVoice.Models
         [Required]
         [JsonProperty(Order = 4)]
         public string ParameterType { get; set; }
+        [JsonIgnore]
+        public List<SelectListItem> ParameterTypeItems { get; set; }
 
         public override T GetInstance<T>()
         {

@@ -11,6 +11,8 @@ namespace ITSVoice.Models
         public int Id { get; set; }
         public int UserId { get; set; }
         [Required]
+        public string CallType { get; set; }
+        [Required]
         public string Name { get; set; }
         [Required]
         public int Type { get; set; }
@@ -23,13 +25,14 @@ namespace ITSVoice.Models
         [Required]
         public int Is24Hours { get; set; }
         [Required]
-        public bool Status { get; set; }
+        public int Status { get; set; }
         public DateTime CreatedDateTime { get; set; }
         public string CallFlow { get; set; }
         [Required]
         public int Cost { get; set; }
         [Required]
         public string RemoteIP { get; set; }
+        [Required]
         public List<IDictionary<string, string>> CallActions { get; set; }
     }
 }

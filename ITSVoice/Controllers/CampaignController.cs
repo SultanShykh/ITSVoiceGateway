@@ -69,6 +69,9 @@ namespace ITSVoice.Controllers
                         var p = JsonConvert.DeserializeObject<ParameterizedWaveFile>(item.ToString());
                         p.OptionalFolderItems = folders;
                         p.OptionalFolder = "";
+
+                        p.ParameterTypeItems = BaseAction.GetSelectListItems(p.ParameterType); ;
+                        p.ParameterType = "";
                         callFlowList.Add(p);
 
                         break;
@@ -125,45 +128,48 @@ namespace ITSVoice.Controllers
 
             if (model != null) 
             {
-                foreach (var v in model.CallActions) 
+                if (model.CallActions != null) 
                 {
-                    var obj = JsonConvert.SerializeObject(v);
-
-                    switch (v["Action"].ToString()) 
+                    foreach (var v in model.CallActions)
                     {
-                        case "Callback":
-                            callflowqueue.Add(JsonConvert.DeserializeObject<Callback>(obj));
-                            break;
-                        case "Beep":
-                            callflowqueue.Add(JsonConvert.DeserializeObject<Beep>(obj));
-                            break;
-                        case "WaveFile":
-                            callflowqueue.Add(JsonConvert.DeserializeObject<WaveFile>(obj));
-                            break;
-                        case "ParameterizedWaveFile":
-                            callflowqueue.Add(JsonConvert.DeserializeObject<ParameterizedWaveFile>(obj));
-                            break;
-                        case "TTS":
-                            callflowqueue.Add(JsonConvert.DeserializeObject<TTS>(obj));
-                            break;
-                        case "Input":
-                            callflowqueue.Add(JsonConvert.DeserializeObject<Input>(obj));
-                            break;
-                        case "InputVerify":
-                            callflowqueue.Add(JsonConvert.DeserializeObject<InputVerify>(obj));
-                            break;
-                        case "InputBoolResponse":
-                            callflowqueue.Add(JsonConvert.DeserializeObject<InputBoolResponse>(obj));
-                            break;
-                        case "InputStringResponseTTS":
-                            callflowqueue.Add(JsonConvert.DeserializeObject<InputStringResponseTTS>(obj));
-                            break;
-                        case "InputStringResponseWaveFile":
-                            callflowqueue.Add(JsonConvert.DeserializeObject<InputStringResponseWaveFile>(obj));
-                            break;
+                        var obj = JsonConvert.SerializeObject(v);
+
+                        switch (v["Action"].ToString())
+                        {
+                            case "Callback":
+                                callflowqueue.Add(JsonConvert.DeserializeObject<Callback>(obj));
+                                break;
+                            case "Beep":
+                                callflowqueue.Add(JsonConvert.DeserializeObject<Beep>(obj));
+                                break;
+                            case "WaveFile":
+                                callflowqueue.Add(JsonConvert.DeserializeObject<WaveFile>(obj));
+                                break;
+                            case "ParameterizedWaveFile":
+                                callflowqueue.Add(JsonConvert.DeserializeObject<ParameterizedWaveFile>(obj));
+                                break;
+                            case "TTS":
+                                callflowqueue.Add(JsonConvert.DeserializeObject<TTS>(obj));
+                                break;
+                            case "Input":
+                                callflowqueue.Add(JsonConvert.DeserializeObject<Input>(obj));
+                                break;
+                            case "InputVerify":
+                                callflowqueue.Add(JsonConvert.DeserializeObject<InputVerify>(obj));
+                                break;
+                            case "InputBoolResponse":
+                                callflowqueue.Add(JsonConvert.DeserializeObject<InputBoolResponse>(obj));
+                                break;
+                            case "InputStringResponseTTS":
+                                callflowqueue.Add(JsonConvert.DeserializeObject<InputStringResponseTTS>(obj));
+                                break;
+                            case "InputStringResponseWaveFile":
+                                callflowqueue.Add(JsonConvert.DeserializeObject<InputStringResponseWaveFile>(obj));
+                                break;
+                        }
                     }
+                    foreach (var rec in callflowqueue) rec.ValidateRequest(() => TryValidateModel(rec, rec.GetType().Name));
                 }
-                foreach (var rec in callflowqueue) rec.ValidateRequest(() => TryValidateModel(rec, rec.GetType().Name));
             }
 
             if (!ModelState.IsValid) 
@@ -171,7 +177,20 @@ namespace ITSVoice.Controllers
                 return Json(new { status=false, message= string.Join("\n", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)) });
             }
 
-            return Json(new { status=true, message="Added Successfully"});
+            model.CallFlow = JsonConvert.SerializeObject(callflowqueue);
+            model.UserId = Convert.ToInt32(Session["UserId"]);
+            model.CreatedDateTime = DateTime.Now;
+
+            try
+            {
+                CampaignProcessing.CreateCampaign(model);
+            }
+            catch (Exception ex) 
+            {
+                return Json(new { status = false, message = ex.Message.ToString() });
+            }
+
+            return Json(new { status=true, message="Campaign Added Successfully"});
         }
     }
 }
