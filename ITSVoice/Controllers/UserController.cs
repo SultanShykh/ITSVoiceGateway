@@ -9,25 +9,27 @@ using System.Web.Mvc;
 
 namespace ITSVoice.Controllers
 {
-    [Auth("admin", "master")]
+    //[Auth("admin", "master")]
     public class UserController : Controller
     {
         // GET: User
         public ActionResult Index(int Id=1, string username=null)
         {
             username = string.IsNullOrEmpty(username) ? null:username;
-            UserProcessing.View_Users(Id, Convert.ToInt32(Session["userId"]), username, out List<UserModel> CampaignCDR, out int totalPages);
+            UserProcessing.View_Users(Id, Convert.ToInt32(Session["userId"]), username, out List<UserModel> users, out int totalPages);
 
             ViewBag.PageNumber = Id;
             ViewBag.username = username;
             ViewBag.totalPages = totalPages;
-            return View(CampaignCDR);
+            return View(users);
         }
+
         [ChildActionOnly]
         public ActionResult _AddUpdate() 
         {
             return PartialView();
         }
+
         [HttpPost]
         public ActionResult _AddUpdate(UserModel user)
         {
@@ -47,6 +49,30 @@ namespace ITSVoice.Controllers
                 return Json(new { status = false, message = ex.Message.ToString() });
             }
         }
+
+        [ChildActionOnly]
+        public ActionResult _BalanceRecharge()
+        {
+            return PartialView();
+        }
+
+        [HttpPost]
+        public ActionResult _BalanceRecharge(UserBalanceRechargeModel user)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { status = true, message = string.Join("\n", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)) });
+
+            try
+            {
+                UserProcessing.BalanceRecharge(user);
+                return Json(new { status = true, message = "Successfully Updated" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = false, message = ex.Message.ToString() });
+            }
+        }
+
         [HttpPost]
         public ActionResult _UpdateUser(UserModel user)
         {

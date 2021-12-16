@@ -14,27 +14,40 @@
         </div>
         
         <nav id="left-sidebar-nav" class="sidebar-nav">
-            
             <ul id="main-menu" class="metismenu">
                 <li class="@Html.IsActive("Index","Home")"><a href="/Home/Index"><i class="lnr lnr-home"></i> <span>Dashboard</span></a></li>
                 @{
-                    try
-                    {
-                        if (Session["userType"].ToString() != "user")
-                        {
-                            <li class="@Html.IsActive("Index","User")"><a href="/User/Index"><i class="lnr lnr-file-empty"></i> <span>Users</span></a></li>
-                        }
-                    }
-                    catch (Exception)
+                    if (Session["userType"].ToString() != "user")
                     {
 
                     }
                 }
+                <li class="@Html.IsActive("Index","User")"><a href="/User/Index"><i class="lnr lnr-file-empty"></i> <span>Users</span></a></li>
                 <li class="@Html.IsActive("","Campaign")" id="campaignTop">
                     <a href="#subPages" class="has-arrow" id="campaignHead" aria-expanded="false"><i class="lnr lnr-file-empty"></i> <span>Campaign</span></a>
                     <ul aria-expanded="true" id="campaign">
+                        <li class="@Html.IsActive("Index","Campaign")"><a href="/Campaign/Index">Campaigns</a></li>
                         <li class="@Html.IsActive("CampaignCDR","Campaign")"><a href="/Campaign/CampaignCDR">Campaign CDR</a></li>
                         <li class="@Html.IsActive("CreateCampaign","Campaign")"><a href="/Campaign/CreateCampaign">Create Campaign</a></li>
+                    </ul>
+                </li>
+                <li class="@Html.IsActive("","Call")" id="callTop">
+                    <a href="#subPages" class="has-arrow" id="callHead" aria-expanded="false"><i class="lnr lnr-file-empty"></i> <span>Call</span></a>
+                    <ul aria-expanded="true" id="call">
+                        <li class="@Html.IsActive("SingleCall","Call")"><a href="/Call/SingleCall">Single Call</a></li>
+                        <li class="@Html.IsActive("BulkCall","Call")"><a href="/Call/BulkCall">Bulk Call</a></li>
+                    </ul>
+                </li>
+                <li class="@Html.IsActive("","PBXAccounts")" id="PBXAccountsTop">
+                    <a href="#subPages" class="has-arrow" id="PBXAccountsHead" aria-expanded="false"><i class="lnr lnr-file-empty"></i> <span>PBX</span></a>
+                    <ul aria-expanded="true" id="pbx">
+                        <li class="@Html.IsActive("Index","PBXAccounts")"><a href="/PBXAccounts/Index">PBX Accounts</a></li>
+                    </ul>
+                </li>
+                <li class="@Html.IsActive("","UserPBXAccounts")" id="UserPBXAccountsTop">
+                    <a href="#subPages" class="has-arrow" id="UserPBXAccountsHead" aria-expanded="false"><i class="lnr lnr-file-empty"></i> <span>User PBX Accoounts</span></a>
+                    <ul aria-expanded="true" id="userPBXAcc">
+                        <li class="@Html.IsActive("Index","UserPBXAccounts")"><a href="/UserPBXAccounts/Index">User Accounts</a></li>
                     </ul>
                 </li>
             </ul>

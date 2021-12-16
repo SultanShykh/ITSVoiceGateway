@@ -1,0 +1,101 @@
+﻿@model List<dynamic>
+<div id="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel-content">
+                    <h3 class="heading"><a href="/Campaign/CreateCampaign"><i id="create" class="fa fa-plus" style="cursor:pointer" data-toggle="tooltip" title="Add Campaign"></i></a>Campaigns</h3>
+                    <br />
+                    <form class="form-inline" action="/Campaign/Index" method="get">
+                        <label for="pwd">Campaign Name:</label>
+                        <input type="text" id="Name" name="Name" class="form-control form-control-sm m-2" value="">
+                        <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                    </form>
+                    <br />
+                    <div class="table-responsive">
+                        <table class="table table-striped table-sm no-margin" id="campTable">
+                            <thead>
+                                <tr class="text-center">
+                                    <th></th>
+                                    <th hidden>Id</th>
+                                    <th>Username</th>
+                                    <th>CallType</th>
+                                    <th>Campaign Name</th>
+                                    <th>StartDate</th>
+                                    <th>EndDate</th>
+                                    <th>DailyStartTime</th>
+                                    <th>DailyEndTime</th>
+                                    <td>Action</td>
+                                    <th>CallFlow</th>
+                                    <th>IsIndefinite</th>
+                                    <th>Is24Hours</th>
+                                    <td>Status</td>
+                                    <td>Cost</td>
+                                    <th>RemoteIP</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var v in Model)
+                                    {
+                                        v.StartDate = v.StartDate == null ? "-" : v.StartDate.ToString("yyyy-MM-dd");
+                                        v.EndDate = v.EndDate == null ? "-" : v.EndDate.ToString("yyyy-MM-dd");
+
+                                        <tr class="text-center">
+                                            <td></td>
+                                            <td hidden>@v.Id</td>
+                                            <td>@v.Username</td>
+                                            <td>@v.Type</td>
+                                            <td>@v.Name</td>
+                                            <td>@v.StartDate</td>
+                                            <td>@v.EndDate</td>
+                                            <td>@v.DailyStartTime</td>
+                                            <td>@v.DailyEndTime</td>
+                                            <td><a class="btn btn-sm btn-info edit" href="/Campaign/Edit/@v.Id">Edit</a></td>
+                                            <td>@v.CallFlow</td>
+                                            <td>@v.IsIndefinite</td>
+                                            <th>@v.Is24Hours</th>
+                                            <td>@v.Status</td>
+                                            <td>@v.Cost</td>
+                                            <td>@v.RemoteIP</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <br />
+                    <div class="container">
+                        <ul class="pagination">
+                            @if (ViewBag.PageNumber > 1)
+                            {
+                                <li class="page-item"><a class="page-link" href="/Campaign/CampaignCDR/1">First</a></li>
+                                <li class="page-item"><a class="page-link" href="/Campaign/CampaignCDR/@((int)ViewBag.PageNumber - 1)">Previous</a></li>
+                            }
+                            <li class="page-item mt-1"><strong>&nbsp;&nbsp;&nbsp;@ViewBag.PageNumber&nbsp;&nbsp;&nbsp;</strong></li>
+                            @if (ViewBag.PageNumber < ViewBag.totalPages)
+                            {
+                                <li class="page-item"><a class="page-link" href="/Campaign/CampaignCDR/@((int)ViewBag.PageNumber + 1)">Next</a></li>
+                                <li class="page-item"><a class="page-link" href="/Campaign/CampaignCDR/@ViewBag.totalPages">@ViewBag.totalPages</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+    {
+    <script>
+        $(document).ready(function () {
+            $('#campTable').DataTable({
+                responsive: true,
+                paging: false,
+                ordering: false,
+                searching: false,
+                info: false,
+            });
+        });
+    </script>
+}

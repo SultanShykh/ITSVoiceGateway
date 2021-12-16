@@ -16,3 +16,7 @@
     overflow: hidden;
     overflow-y: scroll;
 }
+
+.field-validation-error > span {
+	color: red;
+}

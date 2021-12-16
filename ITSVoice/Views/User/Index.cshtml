@@ -26,6 +26,7 @@
                                     <th>CallRateAmount</th>
                                     <th>User Type</th>
                                     <th>Account Type</th>
+                                    <th>Balance Recharge</th>
                                     <th>Action</th>
                                     <th>Currency</th>
                                     <td>Email</td>
@@ -52,6 +53,7 @@
                                             <td>@v.UserType</td>
                                             <td>@v.AccountType</td>
                                             <td><button class="btn btn-sm btn-info edit" data-toggle="modal" data-target="#modal-create">Edit</button></td>
+                                            <td><button class="btn btn-sm btn-info balanceRecharge">Balance Recharge</button></td>
                                             <td>@v.Currency</td>
                                             <td>@v.Email</td>
                                             <td>@v.Mobile</td>
@@ -87,11 +89,14 @@
 </div>
 @{
     Html.RenderAction("_AddUpdate", "User");
+    Html.RenderAction("_BalanceRecharge", "User");
 }
 @section scripts
     {
     <script>
         var formCreate = $("#formCreate");
+        var formBalanceRecharge = $("#formBalanceRecharge");
+
         $(document).ready(function () {
             $('#userTable').DataTable({
                 responsive: true,
@@ -101,6 +106,7 @@
                 info: false,
             });
         });
+
         $('#create').click(function () {
             $('.field-validation-error').text('');
             formCreate.trigger('reset');
@@ -108,6 +114,7 @@
             $('#btnUpdate').addClass('d-none');
             $('#btnCreate').removeClass('d-none');
         });
+
         $('.edit').click(function () {
             $('#balance').removeClass('hidden');
             $('.field-validation-error').text('');
@@ -132,17 +139,18 @@
             } else {
                 $('#status').attr('checked', false);
             }
+
             $('#BalanceAmount').val(data[6]);
             $('#CallRateAmount').val(data[7]);
             $('#UserType').val(data[8]);
             $('#AccountType').val(data[9]);
-            $('#Currency').val(data[11]);
-            $('#Email').val(data[12]);
-            $('#Mobile').val(data[13]);
-
+            $('#formCreate #Currency').val(data[12]);
+            $('#Email').val(data[13]);
+            $('#Mobile').val(data[14]);
             $('#ExpiryDateTime').val(data[15]);
             $('#AuthorizedIP').val(data[16]);
         });
+
         function formSubmit(action, flag) {
             if (flag == true) {
                 $('#Password').rules('remove');
@@ -153,6 +161,7 @@
             } else {
                 $('#status').val(false);
             }
+
             if (formCreate.valid()) {
                 ajaxScript.makeAjaxRequest('Post', action, formCreate.serialize()).then(function (data) {
                     if (data.status == true) {
@@ -162,9 +171,30 @@
                         ShowDivSuccess(data.message);
                     }
                 });
-            } else {
-
             }
         }
+
+        $('.balanceRecharge').click(function () {
+            $('#modal-balance').modal('show');
+            var table = $('#userTable').DataTable();
+            var data = table.row($(this).closest('tr')).data();
+            $('#formBalanceRecharge #Currency').val(data[12]);
+            $('#formBalanceRecharge #UserId').val(data[1]);
+        });
+
+        formBalanceRecharge.submit(function (e) {
+            debugger
+            e.preventDefault();
+            if (formBalanceRecharge.valid()) {
+                ajaxScript.makeAjaxRequest('Post', "/User/_BalanceRecharge", formBalanceRecharge.serialize()).then(function (data) {
+                    if (data.status == true) {
+                        ShowDivSuccess(data.message);
+                    }
+                    else {
+                        ShowDivSuccess(data.message);
+                    }
+                });
+            }
+        });
     </script>
 }

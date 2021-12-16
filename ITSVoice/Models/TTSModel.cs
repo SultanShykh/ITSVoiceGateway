@@ -8,7 +8,7 @@ namespace ITSVoice.Models
     {
         [Required]
         [JsonProperty(Order = 1)]
-        public int InitialDelay { get; set; }
+        public string InitialDelay { get; set; }
         [Required]
         [JsonProperty(Order = 2)]
         public string Text { get; set; }

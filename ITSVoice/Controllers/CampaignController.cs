@@ -14,6 +14,109 @@ namespace ITSVoice.Controllers
     public class CampaignController : Controller
     {
         // GET: Campaign
+
+        public ActionResult Index(int Id = 1) 
+        {
+            CampaignProcessing.View_Campaigans(Id, out List<dynamic> campaignModel, out int totalPages);
+
+            ViewBag.PageNumber = Id;
+            ViewBag.totalPages = totalPages;
+
+            return View(campaignModel);
+        }
+
+        [HttpGet]
+        public ActionResult Edit(int Id) 
+        {
+            List<BaseAction> callFlowList = new List<BaseAction>();
+            List<SelectListItem> files = BaseAction.GetSelectListItems("file", Session["username"].ToString());
+            List<SelectListItem> folders = BaseAction.GetSelectListItems("folder", Session["username"].ToString());
+
+            var result = ActionProcessing.GetActionData();
+
+            dynamic DynamicJson = JsonConvert.DeserializeObject(result);
+            dynamic temp;
+            foreach (var item in DynamicJson)
+            {
+                switch (item.Action.ToString())
+                {
+                    case "Callback":
+                        callFlowList.Add(JsonConvert.DeserializeObject<Callback>(item.ToString()));
+                        break;
+                    case "Beep":
+                        temp = JsonConvert.DeserializeObject<Beep>(item.ToString());
+                        temp.OptionalFilePathItems = files;
+                        temp.OptionalFilePath = "";
+                        callFlowList.Add(temp);
+
+                        break;
+                    case "WaveFile":
+                        temp = JsonConvert.DeserializeObject<WaveFile>(item.ToString());
+                        temp.FilePathItems = files;
+                        temp.FilePath = "";
+                        callFlowList.Add(temp);
+
+                        break;
+                    case "ParameterizedWaveFile":
+                        temp = JsonConvert.DeserializeObject<ParameterizedWaveFile>(item.ToString());
+                        temp.OptionalFolderItems = folders;
+                        temp.OptionalFolder = "";
+
+                        temp.ParameterTypeItems = BaseAction.GetSelectListItems(temp.ParameterType); ;
+                        temp.ParameterType = "";
+                        callFlowList.Add(temp);
+
+                        break;
+                    case "TTS":
+                        callFlowList.Add(JsonConvert.DeserializeObject<TTS>(item.ToString()));
+                        break;
+                    case "Input":
+                        temp = JsonConvert.DeserializeObject<Input>(item.ToString());
+                        temp.TypeItems = BaseAction.GetSelectListItems(temp.Type);
+                        temp.Type = "";
+
+                        callFlowList.Add(temp);
+
+                        break;
+                    case "InputVerify":
+                        temp = JsonConvert.DeserializeObject<InputVerify>(item.ToString());
+                        temp.VerificationTypeItems = BaseAction.GetSelectListItems(temp.VerificationType);
+                        temp.VerificationType = "";
+
+                        temp.ResponseTypeItems = BaseAction.GetSelectListItems(temp.ResponseType);
+                        temp.ResponseType = "";
+
+                        callFlowList.Add(temp);
+                        break;
+                    case "InputBoolResponse":
+                        temp = JsonConvert.DeserializeObject<InputBoolResponse>(item.ToString());
+                        temp.TrueFilePathItems = files;
+                        temp.TrueFilePath = "";
+
+                        temp.FalseFilePathItems = files;
+                        temp.FalseFilePath = "";
+                        callFlowList.Add(temp);
+
+                        break;
+                    case "InputStringResponseTTS":
+                        callFlowList.Add(JsonConvert.DeserializeObject<InputStringResponseTTS>(item.ToString()));
+                        break;
+                    case "InputStringResponseWaveFile":
+                        temp = JsonConvert.DeserializeObject<InputStringResponseWaveFile>(item.ToString());
+                        temp.FilePathItems = files;
+                        temp.FilePath = "";
+                        callFlowList.Add(temp);
+
+                        break;
+                }
+            }
+
+            CampaignModel campModel = new CampaignModel();
+            campModel.CallFlowQueue = callFlowList;
+
+            return View(campModel);
+        }
+
         [HttpGet]
         public ActionResult CampaignCDR(int Id=1, int? callType = null, string start = null, string end = null, int? callResponse = null)
         {
@@ -22,7 +125,7 @@ namespace ITSVoice.Controllers
             end = string.IsNullOrEmpty(end) ? null : end;
             callResponse = callResponse == null ? null : callResponse;
 
-            CampaignProcessing.View_CampaignCDR(Id, callType, start, end, callResponse, out List<CampaignCDRModel> CampaignCDR, out int totalPages);
+            CampaignProcessing.View_CampaignCDR(Id, callType, start, end, callResponse, out List<dynamic> CampaignCDR, out int totalPages);
             
             ViewBag.PageNumber = Id;
             ViewBag.totalPages = totalPages;
@@ -37,13 +140,13 @@ namespace ITSVoice.Controllers
         public ActionResult CreateCampaign() 
         {
             List<BaseAction> callFlowList = new List<BaseAction>();
-            List<SelectListItem> files = BaseAction.GetSelectListItems("file", "sultan");
-            List<SelectListItem> folders = BaseAction.GetSelectListItems("folder", "sultan");
+            List<SelectListItem> files = BaseAction.GetSelectListItems("file", Session["username"].ToString());
+            List<SelectListItem> folders = BaseAction.GetSelectListItems("folder", Session["username"].ToString());
 
             var result = ActionProcessing.GetActionData();
 
             dynamic DynamicJson = JsonConvert.DeserializeObject(result);
-
+            dynamic temp;
             foreach (var item in DynamicJson) 
             {
                 switch (item.Action.ToString())
@@ -52,74 +155,77 @@ namespace ITSVoice.Controllers
                         callFlowList.Add(JsonConvert.DeserializeObject<Callback>(item.ToString()));
                         break;
                     case "Beep":
-                        var b = JsonConvert.DeserializeObject<Beep>(item.ToString());
-                        b.OptionalFilePathItems = files;
-                        b.OptionalFilePath = "";
-                        callFlowList.Add(b);
+                        temp = JsonConvert.DeserializeObject<Beep>(item.ToString());
+                        temp.OptionalFilePathItems = files;
+                        temp.OptionalFilePath = "";
+                        callFlowList.Add(temp);
 
                         break;
                     case "WaveFile":
-                        var w = JsonConvert.DeserializeObject<WaveFile>(item.ToString());
-                        w.FilePathItems = files;
-                        w.FilePath = "";
-                        callFlowList.Add(w);
+                        temp = JsonConvert.DeserializeObject<WaveFile>(item.ToString());
+                        temp.FilePathItems = files;
+                        temp.FilePath = "";
+                        callFlowList.Add(temp);
 
                         break;
                     case "ParameterizedWaveFile":
-                        var p = JsonConvert.DeserializeObject<ParameterizedWaveFile>(item.ToString());
-                        p.OptionalFolderItems = folders;
-                        p.OptionalFolder = "";
+                        temp = JsonConvert.DeserializeObject<ParameterizedWaveFile>(item.ToString());
+                        temp.OptionalFolderItems = folders;
+                        temp.OptionalFolder = "";
 
-                        p.ParameterTypeItems = BaseAction.GetSelectListItems(p.ParameterType); ;
-                        p.ParameterType = "";
-                        callFlowList.Add(p);
+                        temp.ParameterTypeItems = BaseAction.GetSelectListItems(temp.ParameterType); ;
+                        temp.ParameterType = "";
+                        callFlowList.Add(temp);
 
                         break;
                     case "TTS":
                         callFlowList.Add(JsonConvert.DeserializeObject<TTS>(item.ToString()));
                         break;
                     case "Input":
-                        var ip = JsonConvert.DeserializeObject<Input>(item.ToString());
-                        ip.TypeItems = BaseAction.GetSelectListItems(ip.Type);
-                        ip.Type = "";
+                        temp = JsonConvert.DeserializeObject<Input>(item.ToString());
+                        temp.TypeItems = BaseAction.GetSelectListItems(temp.Type);
+                        temp.Type = "";
 
-                        callFlowList.Add(ip);
+                        callFlowList.Add(temp);
 
                         break;
                     case "InputVerify":
-                        var iv = JsonConvert.DeserializeObject<InputVerify>(item.ToString());
-                        iv.VerificationTypeItems = BaseAction.GetSelectListItems(iv.VerificationType);
-                        iv.VerificationType = "";
+                        temp = JsonConvert.DeserializeObject<InputVerify>(item.ToString());
+                        temp.VerificationTypeItems = BaseAction.GetSelectListItems(temp.VerificationType);
+                        temp.VerificationType = "";
 
-                        iv.ResponseTypeItems = BaseAction.GetSelectListItems(iv.ResponseType);
-                        iv.ResponseType = "";
+                        temp.ResponseTypeItems = BaseAction.GetSelectListItems(temp.ResponseType);
+                        temp.ResponseType = "";
 
-                        callFlowList.Add(iv);
+                        callFlowList.Add(temp);
                         break;
                     case "InputBoolResponse":
-                        var ibr = JsonConvert.DeserializeObject<InputBoolResponse>(item.ToString());
-                        ibr.TrueFilePathItems = files;
-                        ibr.TrueFilePath = "";
+                        temp = JsonConvert.DeserializeObject<InputBoolResponse>(item.ToString());
+                        temp.TrueFilePathItems = files;
+                        temp.TrueFilePath = "";
 
-                        ibr.FalseFilePathItems = files;
-                        ibr.FalseFilePath = "";
-                        callFlowList.Add(ibr);
+                        temp.FalseFilePathItems = files;
+                        temp.FalseFilePath = "";
+                        callFlowList.Add(temp);
 
                         break;
                     case "InputStringResponseTTS":
                         callFlowList.Add(JsonConvert.DeserializeObject<InputStringResponseTTS>(item.ToString()));
                         break;
                     case "InputStringResponseWaveFile":
-                        var i = JsonConvert.DeserializeObject<InputStringResponseWaveFile>(item.ToString());
-                        i.FilePathItems = files;
-                        i.FilePath = "";
-                        callFlowList.Add(i);
+                        temp = JsonConvert.DeserializeObject<InputStringResponseWaveFile>(item.ToString());
+                        temp.FilePathItems = files;
+                        temp.FilePath = "";
+                        callFlowList.Add(temp);
 
                         break;
                 }
             }
 
-            return View(callFlowList);
+            CampaignModel campModel = new CampaignModel();
+            campModel.CallFlowQueue = callFlowList;
+
+            return View(campModel);
         }
         [HttpPost]
         public ActionResult CreateCampaign(CampaignModel model) 

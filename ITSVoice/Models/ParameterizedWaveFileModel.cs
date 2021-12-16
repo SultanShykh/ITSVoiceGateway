@@ -11,7 +11,7 @@ namespace ITSVoice.Models
     {
         [Required]
         [JsonProperty(Order = 1)]
-        public int InitialDelay { get; set; }
+        public string InitialDelay { get; set; }
         [JsonProperty(Order = 2)]
         public string OptionalFolder { get; set; }
         [JsonIgnore]

@@ -1,4 +1,4 @@
-﻿@model List<ITSVoice.Models.CampaignCDRModel>
+﻿@model List<dynamic>
 
 <div id="main-content">
     <div class="container-fluid">
@@ -37,10 +37,11 @@
                         <div class="table-responsive">
                             <table class="table table-striped no-margin table-sm" id="campTable">
                                 <thead>
-                                    <tr class="text-sm">
+                                    <tr class="text-center">
                                         <th></th>
                                         <th>Id</th>
                                         <th>CampaignId</th>
+                                        <th>Campaign Name</th>
                                         <th>CallType</th>
                                         <th>PartyA</th>
                                         <th>PartyB</th>
@@ -63,64 +64,55 @@
                                     @{
                                         foreach (var v in Model)
                                         {
-                                            var callType = "";
-                                            var callResponse = "";
                                             var msg = "";
-                                            if (v.CallType == 1)
-                                            {
-                                                callType = "Outgoing";
-                                            }
-                                            else if (v.CallType == 2)
-                                            {
-                                                callType = "Incoming";
-                                            }
 
-                                            if (v.CallResponse == 1)
+                                            if (v.CallResponse == "Queued")
                                             {
-                                                callResponse = "Queued";
                                                 msg = "info";
                                             }
-                                            else if (v.CallResponse == 2)
+                                            else if (v.CallResponse == "Pending")
                                             {
-                                                callResponse = "Pending";
                                                 msg = "warning";
                                             }
-                                            else if (v.CallResponse == 3)
+                                            else if (v.CallResponse == "Answered")
                                             {
-                                                callResponse = "Answered";
                                                 msg = "success";
                                             }
-                                            else if (v.CallResponse == 5)
+                                            else if (v.CallResponse == "Failed")
                                             {
-                                                callResponse = "Failed";
                                                 msg = "danger";
                                             }
-                                            else if (v.CallResponse == 6)
+                                            else if (v.CallResponse == "UnAnswered")
                                             {
-                                                callResponse = "UnAnswered";
                                                 msg = "info";
                                             }
-                                            else if (v.CallResponse == 7)
+                                            else if (v.CallResponse == "Rejected")
                                             {
-                                                callResponse = "Rejected";
                                                 msg = "danger";
                                             }
+
+                                            v.CreatedDateTime = v.CreatedDateTime == null ? "-" : v.CreatedDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                                            v.ScheduleDateTime = v.ScheduleDateTime == null ? "-" : v.ScheduleDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                                            v.CallPickDateTime = v.CallPickDateTime == null ? "-" : v.CallPickDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                                            v.CallDuration = v.CallDuration == null ? "-" : v.CallDuration.ToString("ss");
+                                            v.CallStartDateTime = v.CallStartDateTime == null ? "-" : v.CallStartDateTime.ToString("yyyy-MM-dd HH:mm:ss");
 
                                             <tr class="text-center">
                                                 <td></td>
                                                 <td>@v.Id</td>
                                                 <td>@v.CampaignId</td>
-                                                <td>@callType</td>
+                                                <td>@v.Name</td>
+                                                <td>@v.CallType</td>
                                                 <td>@v.PartyA</td>
                                                 <td>@v.PartyB</td>
-                                                <td>@v.CreatedDateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                                                <td>@v.ScheduleDateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                                                <td><span class="badge badge-@msg">@callResponse</span></td>
+                                                <td>@v.CreatedDateTime</td>
+                                                <td>@v.ScheduleDateTime</td>
+                                                <td><span class="badge badge-@msg">@v.CallResponse</span></td>
                                                 <td>@v.CallCost</td>
-                                                <td>@v.CallPickDateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                                                <td>@v.CallDuration.ToString("ss")</td>
+                                                <td>@v.CallPickDateTime</td>
+                                                <td>@v.CallDuration</td>
                                                 <td>@v.CallRetries</td>
-                                                <td>@v.CallStartDateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                                <td>@v.CallStartDateTime</td>
                                                 <td>@v.CallRateAmount</td>
                                                 <td>@v.CallbackId</td>
                                                 <td>@v.CallInput</td>

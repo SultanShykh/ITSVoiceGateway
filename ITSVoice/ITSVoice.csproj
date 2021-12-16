@@ -142,12 +142,15 @@
     <Compile Include="Controllers\CallController.cs" />
     <Compile Include="Controllers\CampaignController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PBXAccountsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\UserPBXAccountsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\AuthAttribute.cs" />
     <Compile Include="Helper\DataBaseHelper.cs" />
+    <Compile Include="Helper\HtmlValidationExtensions.cs" />
     <Compile Include="HtmlUtility.cs" />
     <Compile Include="Models\BaseActionModel.cs" />
     <Compile Include="Models\BeepModel.cs" />
@@ -160,7 +163,9 @@
     <Compile Include="Models\InputStringResponseWaveFileModel.cs" />
     <Compile Include="Models\InputVerifyModel.cs" />
     <Compile Include="Models\ParameterizedWaveFileModel.cs" />
+    <Compile Include="Models\PBXAccountModel.cs" />
     <Compile Include="Models\TTSModel.cs" />
+    <Compile Include="Models\UserBalanceRechargeModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\WaveFileModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -210,6 +215,11 @@
     <Content Include="Views\User\_AddUpdate.cshtml" />
     <Content Include="Views\Call\SingleCall.cshtml" />
     <Content Include="Views\Call\BulkCall.cshtml" />
+    <Content Include="Views\Campaign\Index.cshtml" />
+    <Content Include="Views\Campaign\Edit.cshtml" />
+    <Content Include="Views\PBXAccounts\Index.cshtml" />
+    <Content Include="Views\UserPBXAccounts\Index.cshtml" />
+    <Content Include="Views\User\_BalanceRecharge.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
